@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+
+
+<script src="https://kit.fontawesome.com/17a4ce7e95.js"></script>
+<link type="text/css" rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" /> 
+
+<title th:text="#{users}">Users</title>
+</head>
+<body>
+	<header>
+		<div class="nav" th:replace="generals/nav :: navbar"></div>
+	</header>
+	
+	<div class="d-flex justify-content-between container">
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+		<div class="flex-item table-container">
+			<div>
+				 <h1 th:text="#{users}">All Users</h1> 
+				<!-- <p th:text="#{user_info}">Here you can find other users and check their own birdbooks.</p> -->
+				<div class="add-btn" sec:authorize="hasAuthority('USER')">
+					<a class="btn btn-success" th:href="@{/users/adduser}" th:text="#{add_user}">Add</a>
+				</div>
+				<form class="form-inline search-bar" action="#" th:action="@{/users}" method="get">
+					<input class="form-control mr-sm-2" type="search" th:placeholder="#{search}" placeholder="Search users" aria-label="Search" name="keyword" id="txtSearch"/>
+					<button class="btn btn-outline-succes my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+				<table class="table table-dark table-striped table-hover list">
+					<tr>
+						<th></th>
+						<th th:text="#{username_list}">Name</th>
+						<th th:text="#{email_list}">Email</th>
+						<th th:text="#{role_list}">Role</th>
+						<th></th>
+						<th></th>
+						<th sec:authorize="hasAuthority('USER')"></th>
+						<th sec:authorize="hasAuthority('USER')"></th>
+						<th></th>
+					</tr>
+					<tr th:each = "user : ${users}">
+						<td></td>
+						<td th:text="${user.username}"></td>
+						<td th:text="${user.email}"></td>
+						<td th:text="${user.role}"></td>
+						<td><a class="btn btn-success" th:href="@{/users/book/{id}(id=${user.id})}" th:text="#{check_book}">Check my book</a><td>
+						<td></td>
+						<td sec:authorize="hasAuthority('USER')">
+							<a class="btn btn-success" th:href="@{/users/edit/{id}(id=${user.id})}" th:text="#{edit_user}">Edit</a>
+						</td>
+						<td sec:authorize="hasAuthority('USER')">
+							<a 
+								class="btn btn-danger" 
+								th:href="@{/users/delete/{id}(id=${user.id})}" 
+								onclick="return confirm('Are you sure you wish to delete?')" th:text="#{delete}">
+									Delete
+							</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	    $("#locales").change(function () {
+	        var selectedOption = $('#locales').val();
+	        if (selectedOption != ''){
+	            window.location.assign('?lang=' + selectedOption);
+	        }
+	    });
+	});
+	</script>
+</body>
+</html>

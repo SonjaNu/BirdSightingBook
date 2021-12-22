@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" /> 
+<script src="https://kit.fontawesome.com/17a4ce7e95.js"></script>
+
+<title th:text="${user?.book?.name}"></title>
+</head>
+<body>
+	<header>
+		<div class="nav" th:replace="generals/nav :: navbar"></div>
+	</header>
+	<div class="d-flex justify-content-between container">
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+		<div class="flex-item table-container">
+			<div class="form">
+				<h1 th:text="${user?.book?.name}"></h1>
+				<p th:text="#{book_text}">Here you can find all your sightings.</p>
+				<!-- <a th:if="${currUser}" class="btn btn-dark mr-sm-2" href="/users" th:text="#{back}" >Back</a> -->
+			</div>
+			
+			<table class="table table-dark table-striped table-hover">
+				<tr>
+						<th></th>
+					<th th:text="#{specie}">SPECIE</th>
+					<th></th>
+					<th th:text="#{place}">PLACE</th>
+					<th></th>
+					<th th:text="#{bname}">NAME OF BIRD</th>
+					<th></th>
+					
+					<th th:text="#{obs}">OBSERVATION</th>
+					<th></th>
+					<th th:text="#{count}">COUNT</th>
+					<th></th>
+					<th th:text="#{date}">
+						DATE
+						<br/>
+						D | M | Y 
+					</th>
+					<th></th>
+					<th th:unless="${currUser}" sec:authorize="hasAnyAuthority('USER')"></th>
+					<th th:if="${currUser} and ${!currUser?.book?.findings.contains(finding)}" sec:authorize="hasAnyAuthority('USER')"></th>
+					<th th:unless="${currUser} and ${!currUser?.book?.findings.contains(finding)}" sec:authorize="hasAnyAuthority('USER')"></th>
+				</tr>
+				<tr th:each = "finding : ${book.findings}">
+					<td></td>
+					<td th:text="${finding?.specie?.getName}"></td>
+					<td></td>
+					<td th:text="${finding?.sightplace?.getName}"></td>
+					<td></td>
+					<td th:text="${finding?.bird?.getName}"></td>
+					<td></td>
+					<td th:text="${finding.getName}"></td>
+					<td></td>
+					<td th:text="${finding.count}"></td>
+					<td></td>
+					<td th:text="${finding.day} + '.' + ${finding.month} + '.' + ${finding.year}"></td>
+					<td></td>
+					
+					<td th:unless="${currUser}" sec:authorize="hasAnyAuthority('USER')">
+						<a class="btn btn-warning" th:href="@{/books/remove/{id}(id=${finding.id})}" th:text="#{remove}">Delete</a>
+					</td>
+					<td th:if="${currUser} and ${!currUser?.bag?.findings.contains(finding)}" sec:authorize="hasAnyAuthority('USER')">
+						<a class="btn btn-success" th:href="@{/users/{userid}/add/{findingid}(userid=${user.id}, findingid=${finding.id})}" th:text="#{add}">Add</a>
+					</td>
+					<td th:unless="${currUser} and ${!currUser?.book?.findings.contains(finding)}" sec:authorize="hasAnyAuthority('USER')">
+					</td>
+					
+				</tr>
+			</table>
+		</div>
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	    $("#locales").change(function () {
+	        var selectedOption = $('#locales').val();
+	        if (selectedOption != ''){
+	            window.location.assign('?lang=' + selectedOption);
+	        }
+	    });
+	});
+	</script>
+</body>
+</html>

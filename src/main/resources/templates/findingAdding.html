@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" /> 
+<script src="https://kit.fontawesome.com/17a4ce7e95.js"></script>
+
+<title th:text="#{addF} ">Add Sighting</title>
+</head>
+<body>
+	<header>
+		<div class="nav" th:replace="generals/nav :: navbar"></div>
+	</header>
+	<div class="clear"></div>
+	<div class="d-flex justify-content-between container">
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+		<div class="flex-item main-container">
+			<div>
+				<h1  th:text="#{addF} ">Add Sighting</h1>
+				<form th:object="${finding}" th:action="@{/findings/save}" action="#" method="post">
+				
+					<div class="d-flex form-group">
+						<label hidden="hidden" for="id">Id</label>
+						<input class="form-control" type="hidden" id="id" th:field="${finding.id}" required />
+						<span>
+							<label for="name" th:text="#{fname}">Name</label>
+							<input class="form-control" type="text" id="name" th:placeholder="#{new_finding}" placeholder="Name the Sighting here" th:field="${finding.name}" style="max-width: 200px" required />
+						</span>
+						<div class="clear-width"></div>
+						<span>
+							<label for="sightplace" th:text="#{fplace}">Sighting place</label>
+						<!--	<input class="form-control" type="text" id="category" th:placeholder="#{new_disc}" placeholder="Type the disc" th:field="${finding.specie}" style="max-width: 200px" required />
+							-->
+							
+						 	<select class="form-control" id="sightplace" th:field="*{sightplace}" style="max-width: 200px" required >
+								<option value="" th:disabled selected th:text="#{pchoose}">Choose the place</option>
+								<option th:each="p: ${sightplace}" th:value="${p.id}" th:text="${p.getName}"></option>
+							</select> 
+						</span>
+					</div>
+					<div class="d-flex form-group">	
+					
+						<span>
+							<label for="company" th:text="#{fspecie}">Specie</label>
+							<select class="form-control" id="specie" th:field="*{specie}" style="width: 200px" required onchange="showBirds()">
+								<option value="" th:disabled selected th:text="#{schoose}">Choose the specie</option>
+								<option th:each="s: ${specie}" th:value="${s.id}" th:text="${s.getName}"></option>
+							</select>
+						</span>
+						<div class="clear-width"></div>
+						<span>
+							<label for="bird" th:text="#{fbird}">Bird</label>
+							<select class="form-control" id="bird" th:field="*{bird}" style="width: 200px" required >
+								<option value="" th:disabled selected th:text="#{bchoose}">Choose the bird</option>
+								<option th:each="b: ${birds}" th:value="${b.id}" th:text="${b.getName}"></option>
+							</select>
+						</span>
+						
+						<div class="clear-width"></div>
+						
+					</div>
+					
+					<div class="d-flex form-group">
+						<span class="span">
+							<label for="day" th:text="#{day}">Day</label>
+							<input class="form-control" type="number" id="day" min="0" max="31" th:field="*{day}" required />
+						</span>
+						<span class="span">
+							<label for="month" th:text="#{month}">month</label>
+							<input class="form-control" type="number" id="month" min="0" max="12" th:field="*{month}" required />
+						</span>
+						<span class="span">
+							<label for="turn" th:text="#{year}">year</label>
+							<input class="form-control" type="number" id="year" min="1950" max="2050" th:field="*{year}" required />
+						</span>
+						<span class="span">
+							<label for="count" th:text="#{count}">Count</label>
+							<input class="form-control" type="number" id="count" min="0" max="1000" th:field="*{count}" required />
+						</span>
+					</div>
+					<div class="form-group form-flex">
+						<button class="btn btn-secondary" type="submit" th:text="#{save}">Save</button>
+						<button class="btn" type="reset" th:text="#{reset}">Reset</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	    $("#locales").change(function () {
+	        var selectedOption = $('#locales').val();
+	        if (selectedOption != ''){
+	            window.location.assign('?lang=' + selectedOption);
+	        }
+	    });
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:fragment="headerfiles">
+<meta charset="UTF-8" />
+<link th:href="@{/css/styles.css}" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="css/bootstrap.css" th:href="@{css/bootstrap.css}" /> 
+</head>
+<body>
+	<div th:fragment="navbar">
+		<nav class="navbar navbar-expand-lg navbar-light">
+			<div class="col-sm-2 col-xs-6 ">
+				<a class="navbar-brand">Birdbook</a> 
+			</div>
+			<div class="navbar-collapse" id="navbarNavDropdown">
+			
+				<ul class="navbar-nav">
+				
+					<li class="nav-item">
+						<a class="nav-link" href="/main" th:text="#{main}">Main <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/findings" th:text="#{sighting}" >Birds <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item" >  <!-- sec:authorize="hasAnyAuthority('USER')" -->
+						<a class="nav-link" href="/users/book" th:text="#{book}">My sightings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/users" th:text="#{users}">Users</a>
+					</li>
+					 <li class="nav-item">
+						<a class="nav-link" href="/species" th:text="#{species}">Species</a>
+					</li>
+					<li class="nav-item"> <!-- sec:authorize="hasAuthority('USER')" -->
+						<a class="nav-link" href="/places" th:text="#{places}">Sighting places</a>
+					</li> 
+				</ul>
+			
+	
+			<div class="nav-lang" >
+			
+			<span th:text="#{language}"  ></span>
+			</div>
+				<select class="form-control" style="width: 100px" id="locales">
+					<option value="en" th:text="#{eng}"></option>
+					<option value="fi" th:text="#{fin}"></option>
+				</select>
+				
+				
+			</div>
+			
+				<div class="nav-login" >
+			<div sec:authorize="isAnonymous">
+				<a class="btn btn-light" href="/login" th:text="#{login}">Login</a>
+			</div>
+			<div class="dropdown" sec:authorize="hasAnyAuthority('USER')">
+				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+					<i class="fas fa-user"></i>
+					[[${#httpServletRequest.remoteUser}]]
+				</button>
+				<div class="dropdown-menu dropdown-menu-right">
+					<div class="dropdown-divider"></div>
+					<a class="btn dropdown-item" href="/logout" th:text="#{logout}">Logout</a>
+					
+				</div>
+			</div>
+			</div>
+			
+		</nav>
+	</div>
+	
+</body>
+</html>

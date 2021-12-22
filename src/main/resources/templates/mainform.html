@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="css/styles.css" th:href="@{css/styles.css}" /> 
+<script src="https://kit.fontawesome.com/17a4ce7e95.js"></script>
+
+<title>Birdbook App</title>
+</head>
+<body>
+	
+	<header>
+		<div th:replace="generals/nav :: navbar"></div>
+	</header>
+	
+	<div class="d-flex justify-content-between container">
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+		<div class="flex-item main-container">
+			<div class="content">
+				<div class="text-box">
+					<h1 th:text="#{welcome}">Welcome</h1>
+					<h2 sec:authorize="hasAnyAuthority('USER')">[[${#httpServletRequest.remoteUser}]]</h2>
+				
+				</div>
+				
+				<div class="text-box">
+					
+					
+					
+					<div class="clear"></div>
+					
+					<h6 th:text="#{info}">Information</h6>
+					<p th:text="#{infotext}">
+						Now, you can create your own birdbook. You can keep a record of the birds who you've sighted. 
+					</p>
+					<p th:text="#{infotext2}">
+						
+					</p>
+					
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	    $("#locales").change(function () {
+	        var selectedOption = $('#locales').val();
+	        if (selectedOption != ''){
+	            window.location.assign('?lang=' + selectedOption);
+	        }
+	    });
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" /> 
+
+<script src="https://kit.fontawesome.com/17a4ce7e95.js"></script>
+<title>Sightings</title>
+</head>
+<body>
+	<header>
+		<div class="nav" th:replace="generals/nav :: navbar"></div>
+	</header>
+	<div class="d-flex justify-content-between container">
+		
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+		
+		<div class="flex-item table-container">
+			<h1 th:text="#{findings}"></h1>
+			<p th:text="#{f_text}"></p>
+			<a class="btn btn-success" th:href="@{/findings/add}" sec:authorize="hasAuthority('USER')" th:text="#{fadd}" ></a>
+			
+			<form class="form-inline search-bar" action="#" th:action="@{/findings}" method="GET">
+				<input class="form-control mr-sm-2" type="search" th:placeholder="#{fsearch}" placeholder="Search sightings" aria-label="Search" name="keyword" id="txtSearch" />
+				<button class="btn btn-outline-succes my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+			</form>
+			<table class="table table-dark table-striped table-hover list">
+				
+				<tr>
+					<th></th>
+					<th th:text="#{specie}">SPECIE</th>
+					<th></th>
+					<th th:text="#{place}">PLACE</th>
+					<th></th>
+					<th th:text="#{bname}">NAME OF BIRD</th>
+					<th></th>
+					<th th:text="#{count}">COUNT</th>
+					<th></th>
+					<th th:text="#{date}">
+						DATE OF SIGHTING
+						<br/>
+						D | M | Y 
+					</th>
+					<th></th>
+					<th th:text="#{obs}">OBS</th>
+					<th></th>
+					
+					<th th:if="${book.contains(finding)}" sec:authorize="hasAnyAuthority('USER')"></th>
+					<th th:if="${!book.contains(finding)}" sec:authorize="hasAnyAuthority('USER')"></th>
+					<th sec:authorize="hasAuthority('USER')"></th>
+					<th sec:authorize="hasAuthority('USER')"></th>
+				</tr>	
+							
+				<tr th:each = "f : ${findings}">
+					<td></td>
+					<td th:text="${f?.specie?.getName}"></td>
+					<td></td>
+					<td th:text="${f?.sightplace?.getName}"></td>
+					<td></td>
+					<td th:text="${f?.bird?.getName}"></td>
+					<td></td>
+					
+					<td th:text="${f.count}"></td>
+					<td></td>
+					<td th:text="${f.day} + '.' + ${f.month} + '.' + ${f.year} "></td>
+					<td></td>
+					<td th:text="${f.getName}"></td>
+					<td></td>
+					<td th:if="${!book.contains(finding)}" >
+						<a class="btn btn-success" th:href="@{/findings/addtobook/{id}(id=${f.id})}" th:text="#{add}" ></a>
+					</td>
+				 	<td th:if="${book.contains(finding)}" >
+					</td>
+					 <td >
+						<a class="btn btn-success" th:href="@{/findings/edit/{id}(id=${f.id})}" th:text="#{edit}"></a>
+					</td> 
+					<td >
+						<a 
+							class="btn btn-danger" 
+							th:href="@{/findings/delete/{id}(id=${f.id})}" 
+							onclick="return confirm('Are you sure you wish to delete')" th:text="#{delete}">
+						</a>
+					</td> 
+					
+				</tr>
+				
+			</table>
+			
+		</div>
+
+		<div class="flex-item">
+			<div class="side-container"></div>
+		</div>
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	    $("#locales").change(function () {
+	        var selectedOption = $('#locales').val();
+	        if (selectedOption != ''){
+	            window.location.assign('?lang=' + selectedOption);
+	        }
+	    });
+	});
+	</script>
+</body>
+</html>
